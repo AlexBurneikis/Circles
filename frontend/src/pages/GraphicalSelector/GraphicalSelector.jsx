@@ -132,7 +132,9 @@ const GraphicalSelector = () => {
   };
 
   const handleFullSend = async () => {
-    const { data } = await axios.get("/programs/graph/full");
+    if (fullSend) return;
+
+    const { data } = await axios.get("/programs/full_graph");
     const { edges, courses } = data;
     if (courses.length !== 0 && edges.length !== 0) initialiseGraph(courses, edges);
 
