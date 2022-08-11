@@ -322,14 +322,16 @@ def graph(
     }
 
 
-@router.get("/graph/full", response_model=Graph)
+@router.get("/full_graph", response_model=Graph)
 def graph_full():
     """ TODO: make epic docs """
 
-    courses = [
-            course["code"] for course in fetch_all_courses()
-        ]
+    print("\n"*10, "got here")
+    courses = list(fetch_all_courses().keys())
+    print("course")
+    print("got courses")
     edges, failed_courses = construct_graph(courses, [])
+    print("got done, returning")
 
     return {
         "edges": edges,

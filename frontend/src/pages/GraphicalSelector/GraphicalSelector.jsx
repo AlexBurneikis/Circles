@@ -131,12 +131,15 @@ const GraphicalSelector = () => {
     edges.forEach((e) => e.hide());
   };
 
+  /* eslint-disable */
   const handleFullSend = async () => {
     if (fullSend) return;
-
+    console.log("sending")
     const { data } = await axios.get("/programs/full_graph");
+    console.log("data is back");
     const { edges, courses } = data;
     if (courses.length !== 0 && edges.length !== 0) initialiseGraph(courses, edges);
+    console.log("done init");
 
     setFullSend(true);
   };
