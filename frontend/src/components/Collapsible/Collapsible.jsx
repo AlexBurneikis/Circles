@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable */
+import React, { useEffect, useRef, useState } from "react";
+import autoAnimate from "@formkit/auto-animate";
 import { Typography } from "antd";
 import S from "./styles";
 
@@ -16,8 +18,12 @@ const Collapsible = ({
     setIsCollapsed(!isCollapsed);
   };
 
+  const parent = useRef(null);
+
+  useEffect(() => parent.current && autoAnimate(parent.current), [parent]);
+
   return (
-    <div>
+    <div ref={parent}>
       <S.CollapsibleHeader onClick={toggleCollapse} style={headerStyle}>
         <S.CollapseButton collapsed={isCollapsed} />
         {(typeof title === "string")
@@ -29,9 +35,13 @@ const Collapsible = ({
             title
           )}
       </S.CollapsibleHeader>
-      <S.CollapsibleContent collapsed={isCollapsed}>
-        {children}
-      </S.CollapsibleContent>
+      {
+        (isCollapsed) ? (
+          <S.CollapsibleContent collapsed={isCollapsed}>
+            {children}
+          </S.CollapsibleContent>
+        ) : null
+      }
     </div>
   );
 };

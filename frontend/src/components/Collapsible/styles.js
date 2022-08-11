@@ -22,10 +22,10 @@ const CollapseButton = styled(RightOutlined)`
   margin-bottom: 10px;
   padding: 10px;
   transition: 200ms;
-  transform: rotate(90deg);
+  transform: rotate(0deg);
 
   ${({ collapsed }) => collapsed && css`
-    transform: rotate(0);
+    transform: rotate(90deg);
   `}
 `;
 
@@ -35,13 +35,13 @@ const CollapsibleContent = styled.div`
   padding-left: 35px;
   padding-right: 35px;
 
-  ${({ collapsed }) => collapsed && css`
-    height: 0px;
-    opacity: 0px;
-    display: none;
-    transition: 250ms;
-    width: 100%;
-  `}
+  /* ${({ collapsed }) => collapsed && css` */
+  /*   height: 0px; */
+  /*   opacity: 0px; */
+  /*   display: none; */
+  /*   transition: 250ms; */
+  /*   width: 100%; */
+  /* `} */
 `;
 
 export default { CollapsibleHeader, CollapsibleContent, CollapseButton };
