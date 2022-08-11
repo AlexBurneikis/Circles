@@ -18,6 +18,8 @@ const GraphicalSelector = () => {
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState(null);
 
+  const [fullSend, setFullSend] = useState(false);
+
   const ref = useRef(null);
 
   // courses is a list of course codes
@@ -129,6 +131,14 @@ const GraphicalSelector = () => {
     edges.forEach((e) => e.hide());
   };
 
+  const handleFullSend = async () => {
+    const { data } = await axios.get("/programs/graph/full");
+    const { edges, courses } = data;
+    if (courses.length !== 0 && edges.length !== 0) initialiseGraph(courses, edges);
+
+    setFullSend(true);
+  };
+
   return (
     <PageTemplate>
       <S.Wrapper>
@@ -141,6 +151,9 @@ const GraphicalSelector = () => {
           </Button>
           <Button onClick={handleHideGraph}>
             Hide Graph
+          </Button>
+          <Button onClick={handleFullSend}>
+            Full Send
           </Button>
           <div>
             {course ? <div>{course.code} - {course.title}</div> : "No course selected"}

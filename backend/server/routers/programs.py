@@ -17,7 +17,7 @@ from data.processors.models import (
 from data.utility import data_helpers
 from server.database import programsCOL, specialisationsCOL
 from server.manual_fixes import apply_manual_fixes
-from server.routers.courses import get_path_from, regex_search
+from server.routers.courses import fetch_all_courses, get_path_from, regex_search
 from server.routers.model import (
     CourseCodes,
     Courses,
@@ -313,8 +313,33 @@ def graph(
         "err_edges": [ "CODEXXXX", ... ]
     """
     courses = get_structure_course_list(programCode, spec)["courses"]
-    edges = []
-    failed_courses: List[str] = []
+    edges, failed_courses = construct_graph(courses, [])
+
+    return {
+        "edges": edges,
+        "courses": courses,
+        "err_edges": failed_courses,
+    }
+
+
+@router.get("/graph/full", response_model=Graph)
+def graph_full():
+    """ TODO: make epic docs """
+
+    courses = [
+            course["code"] for course in fetch_all_courses()
+        ]
+    edges, failed_courses = construct_graph(courses, [])
+
+    return {
+        "edges": edges,
+        "courses": courses,
+        "err_edges": failed_courses,
+    }
+
+
+def construct_graph(courses: List[str], failed_courses: List[str]):
+    """ TODO: Write this """
 
     proto_edges: List[Dict[str, str]] = [map_suppressed_errors(
         get_path_from, failed_courses, course
@@ -323,12 +348,8 @@ def graph(
             proto_edges_to_edges(proto_edges),
             courses
         )
+    return edges, failed_courses
 
-    return {
-        "edges": edges,
-        "courses": courses,
-        "err_edges": failed_courses,
-    }
 
 
 ###############################################################
